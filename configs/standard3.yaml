@@ -80,6 +80,10 @@ can_interface: "can0"
 
 #####-----gimbal参数-----#####
 com_port: "/dev/cboard"
+# 导航帧转发: 下位机和导航程序之间的帧('U'开头)经这个串口原样转发, 见 io/gimbal/nav_relay.hpp
+nav_relay: true
+nav_relay_rx_port: 8101   # 导航 -> 下位机: 监听本机这个 UDP 端口
+nav_relay_tx_port: 8102   # 下位机 -> 导航: 发到本机这个 UDP 端口
 yaw_kp: 0
 yaw_kd: 0
 pitch_kp: 0

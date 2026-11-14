@@ -4,11 +4,13 @@
 #include <Eigen/Geometry>
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <thread>
 #include <tuple>
 
+#include "nav_relay.hpp"
 #include "serial/serial.h"
 #include "tools/thread_safe_queue.hpp"
 
@@ -98,8 +100,14 @@ private:
   tools::ThreadSafeQueue<std::tuple<Eigen::Quaterniond, std::chrono::steady_clock::time_point>>
     queue_{1000};
 
+  // 导航帧转发(配置里 nav_relay: true 时启用, 否则为空, 行为与原来完全一样)
+  std::unique_ptr<NavRelay> nav_relay_;
+  std::thread nav_thread_;
+
   bool read(uint8_t * buffer, size_t size);
   void read_thread();
+  bool read_nav_frame();
+  void nav_thread();
   void reconnect();
 };
 
